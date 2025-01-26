@@ -8,7 +8,7 @@ export function useFetch(url) {
 
     const sliceData = (arr, limit) => arr.slice(0, limit)
 
-    function getData(url,) {
+    function getData(url) {
         fetch(url)
             .then(res => {
                 if (!res.ok) {
@@ -33,7 +33,7 @@ export function useFetch(url) {
 
     useEffect(() => {
         getData(url)
-    }, [limitData]);
+    }, [url, limitData]);
 
     function refetch(params) {
         setLimitData(params.params._limit)
