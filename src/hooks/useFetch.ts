@@ -1,16 +1,14 @@
 import {useEffect, useState} from "react";
 
-export function useFetch(url) {
-    const [data, setData] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
+export function useFetch<T>(url: string, options: {} = {}) {
+    const [data, setData] = useState<T[] | null>(null)
+    const [isLoading, setIsLoading] = useState<Boolean>(true)
     const [error, setError] = useState(null)
-    const [limitData, setLimitData] = useState('')
 
-    const sliceData = (arr, limit) => arr.slice(0, limit)
-
-    function getData(url,) {
+    const getData = (opt: {} = options) => {
         fetch(url)
             .then(res => {
+                console.log(opt)
                 if (!res.ok) {
                     throw Error('Не могу получить данные')
                 }
@@ -19,11 +17,7 @@ export function useFetch(url) {
             .then(data => {
                 setIsLoading(false)
                 setError(null)
-                if (limitData) {
-                    setData(sliceData(data, limitData))
-                } else {
-                    setData(data)
-                }
+                setData(data)
             })
             .catch(err => {
                 setIsLoading(false)
@@ -33,16 +27,12 @@ export function useFetch(url) {
 
     useEffect(() => {
         getData(url)
-    }, [limitData]);
-
-    function refetch(params) {
-        setLimitData(params.params._limit)
-    }
+    }, []);
 
     return {
         data,
         isLoading,
         error,
-        refetch
+        refetch: getData
     }
 }

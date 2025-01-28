@@ -1,19 +1,21 @@
 import {Link} from "react-router";
 import {useFetch} from "../hooks/useFetch";
 
+interface IPost {
+    userId: number,
+    id: number,
+    title: string,
+    body: string,
+}
+
 export function HomeWork1() {
-    const {
-        data,
-        isLoading,
-        error,
-        refetch
-    } = useFetch('https://jsonplaceholder.typicode.com/posts');
+    const {data,isLoading,error,refetch} = useFetch<IPost[]>('https://jsonplaceholder.typicode.com/posts');
 
     return <>
         <h1>Домашнее задание 1</h1>
         <h3>Реализуйте хук useFetch()</h3>
         <nav>
-        <Link className={'btn'} to={'/'}>Вернуться</Link>
+            <Link className={'btn'} to={'/'}>Вернуться</Link>
         </nav>
         <div className={'use-fetch content'}>
             <div>
@@ -27,7 +29,8 @@ export function HomeWork1() {
             </div>
             {isLoading && 'Загрузка...'}
             {error && 'Произошла ошибка'}
-            {data && !isLoading && data.map(item => <div key={item.id}>{item.title}</div>) }
+            {data && !isLoading && data.map(item => <div key={item.id}>{item.title}</div>
+            )}
         </div>
     </>
 }
